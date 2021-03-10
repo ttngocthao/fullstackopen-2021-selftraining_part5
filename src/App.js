@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from 'react'
 import loginService from './services/login'
 import blogService from './services/blogs'
+import Togglable from './components/togglable/Togglable'
+import BlogForm from './components/blogForm/BlogForm'
 
 
 
@@ -58,19 +60,13 @@ function App() {
     setUser(null)
   }
 
-  const handleAddBlog =async(e)=>{
-    e.preventDefault()
-    alert('added new blog')
-    console.log(title,author,url)
-    try {
-      const newBlogObj = {
-        title, author,url
-      }
+  const handleAddBlog =async(newBlogObj)=>{
+  
+  
+    try {     
       const res = await blogService.create(newBlogObj)
       setBlogs([...blogs,res])
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+     
       setNotification({
         message: `A new blog ${res.title} by ${res.author} was added`,
         successful: true
@@ -82,7 +78,7 @@ function App() {
         })
       },5000)
     } catch (error) {
-      
+      console.log(error)
       setNotification({
         message:'Error adding blog',
         successful: false
@@ -123,41 +119,7 @@ function App() {
     )
   }
 
-  const blogForm =()=>{
-    return(
-      <form onSubmit={handleAddBlog}>
-        <h2>Creat new</h2>
-        <div>
-          Title:
-          <input 
-          type='text'
-          value={title}
-          name='title'
-          onChange={(e)=>setTitle(e.target.value)}
-          />
-        </div>
-        <div>
-          Author:
-          <input 
-          type='text'
-          value={author}
-          name='author'
-          onChange={(e)=>setAuthor(e.target.value)}
-          />
-        </div>
-        <div>
-          Url:
-          <input
-          type='text'
-          value={url}
-          name='url'
-          onChange={(e)=>setUrl(e.target.value)}
-          />
-        </div>
-        <button type='submit'>Create</button>
-      </form>
-    )
-  }
+  
 
   useEffect(()=>{
     (async()=>{
@@ -188,7 +150,10 @@ function App() {
         <>
           <div>{user.username} logged in <button onClick={handleLogout}>Logout</button></div>
           <br/>
-          {blogForm()}
+          <Togglable buttonLabel='New Blog'>
+             <BlogForm handleAddBlog={handleAddBlog}/>
+          </Togglable>
+         
           <br/>
           <div>
             {blogs.length===0 ? 'No blog posted' : blogs.map(b=><div key={b.id}>{b.title} - {b.author}</div>)}
