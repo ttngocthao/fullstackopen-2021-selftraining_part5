@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import Togglable from './components/togglable/Togglable'
 import BlogForm from './components/blogForm/BlogForm'
 import LoginForm from './components/loginForm/LoginForm'
+import Blogs from './components/blogs/Blogs'
 
 
 
@@ -124,9 +125,9 @@ function App() {
           </Togglable>
          
           <br/>
-          <div>
-            {blogs.length===0 ? 'No blog posted' : blogs.map(b=><div key={b.id}>{b.title} - {b.author}</div>)}
-          </div>
+
+          <Blogs blogs={blogs}/>
+          
         </>
       }
     </div>
