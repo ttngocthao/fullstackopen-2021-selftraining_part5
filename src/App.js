@@ -3,6 +3,7 @@ import loginService from './services/login'
 import blogService from './services/blogs'
 import Togglable from './components/togglable/Togglable'
 import BlogForm from './components/blogForm/BlogForm'
+import LoginForm from './components/loginForm/LoginForm'
 
 
 
@@ -15,18 +16,12 @@ function App() {
     message:null,
     successful:null
   })
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+ 
   const [user,setUser] = useState(null)
   const [blogs,setBlogs]=useState([])
-  //?FOR BLOG FORM
-  const [title,setTitle]= useState('')
-  const [author,setAuthor]= useState('')
-  const [url,setUrl] = useState('')
+ 
 
-  const handleLogin =async(e)=>{
-    e.preventDefault()
-    
+  const handleLogin =async({username,password})=>{       
     try {
       const user = await loginService.login({
         username, password,
@@ -37,8 +32,7 @@ function App() {
       )   
       blogService.setToken(user.token) //to use in create a new blog post
       setUser(user)
-      setUsername('')
-      setPassword('')
+    
 
     } catch (exception) {
       setNotification({
@@ -93,32 +87,7 @@ function App() {
     }
   }
 
-  const loginForm =()=>{
-    return(
-      <form onSubmit={handleLogin}>
-        <div>
-          Username
-            <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          Password
-            <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    )
-  }
-
+  
   
 
   useEffect(()=>{
@@ -145,7 +114,7 @@ function App() {
           {notification.message}
          </div>
       }
-      {!user && loginForm()}
+      {!user && <LoginForm handleLogin={handleLogin}/>}
       {user && user.token &&
         <>
           <div>{user.username} logged in <button onClick={handleLogout}>Logout</button></div>
