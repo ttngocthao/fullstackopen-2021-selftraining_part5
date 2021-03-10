@@ -5,13 +5,11 @@ import Togglable from './components/togglable/Togglable'
 import BlogForm from './components/blogForm/BlogForm'
 import LoginForm from './components/loginForm/LoginForm'
 import Blogs from './components/blogs/Blogs'
-
+import Notification from './components/notification/Notification'
 
 
 function App() {
-  const notiStyles = {backgroundColor:'silver',borderRadius:'5px',padding:'15px',margin:'20px 0'}
-  const successfulNotiStyles ={color:'green',border:'2px solid green'}
-  const errorNotiStyles ={color:'red',border:'2px solid red'}
+ 
 
   const [notification, setNotification] = useState({
     message:null,
@@ -110,12 +108,12 @@ function App() {
   return (
     <div>
       <h1>Blog</h1>
+      
       {notification.message && notification.successful && 
-        <div style={notification.successful ? {...successfulNotiStyles,...notiStyles}:{...errorNotiStyles,...notiStyles}}>
-          {notification.message}
-         </div>
-      }
+        <Notification message={notification.message} successful={notification.successful}/>}
+      
       {!user && <LoginForm handleLogin={handleLogin}/>}
+      
       {user && user.token &&
         <>
           <div>{user.username} logged in <button onClick={handleLogout}>Logout</button></div>
