@@ -1,6 +1,7 @@
-import React,{useState} from 'react'
+import React,{useState,useImperativeHandle} from 'react'
 
-const Togglable = (props) => {
+//!wrap the component inside of a forwardRef function call. This way the component can access the ref that is assigned to it.
+const Togglable = React.forwardRef((props,ref) => {
 
     const [visible,setVisible]=useState(false)
 
@@ -10,6 +11,13 @@ const Togglable = (props) => {
     const toggleVisibility =()=>{
         setVisible(!visible)
     }
+    //!The useImperativeHandle hook makes its toggleVisibility function available outside of the component.
+    useImperativeHandle(ref,()=>{
+        return{
+            toggleVisibility
+        }
+    })
+
 
     return (
         <div>
@@ -23,6 +31,6 @@ const Togglable = (props) => {
             </div>
         </div>
     )
-}
+})
 
 export default Togglable

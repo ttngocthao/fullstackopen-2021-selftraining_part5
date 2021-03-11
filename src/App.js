@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import loginService from './services/login'
 import blogService from './services/blogs'
-import Togglable from './components/togglable/Togglable'
+
 import BlogForm from './components/blogForm/BlogForm'
 import LoginForm from './components/loginForm/LoginForm'
 import Blogs from './components/blogs/Blogs'
@@ -139,9 +139,9 @@ function App() {
         <>
           <div>{user.username} logged in <button onClick={handleLogout}>Logout</button></div>
           <br/>
-          <Togglable buttonLabel='New Blog'>
+          
              <BlogForm handleAddBlog={handleAddBlog} />
-          </Togglable>
+      
          
           <br/>
 
