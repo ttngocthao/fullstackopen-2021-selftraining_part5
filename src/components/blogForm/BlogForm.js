@@ -1,5 +1,7 @@
 import React,{useState, useRef} from 'react'
 import Togglable from '../togglable/Togglable'
+import PropTypes from 'prop-types'
+
 
 const BlogForm = ({handleAddBlog}) => {
     const blogFormRef = useRef()
@@ -23,28 +25,28 @@ const BlogForm = ({handleAddBlog}) => {
                 <div>
                 Title:
                 <input 
-                type='text'
-                value={title}
-                name='title'
-                onChange={(e)=>setTitle(e.target.value)}
+                    type='text'
+                    value={title}
+                    name='title'
+                    onChange={(e)=>setTitle(e.target.value)}
                 />
                 </div>
                 <div>
                 Author:
                 <input 
-                type='text'
-                value={author}
-                name='author'
-                onChange={(e)=>setAuthor(e.target.value)}
+                    type='text'
+                    value={author}
+                    name='author'
+                    onChange={(e)=>setAuthor(e.target.value)}
                 />
                 </div>
                 <div>
                 Url:
                 <input
-                type='text'
-                value={url}
-                name='url'
-                onChange={(e)=>setUrl(e.target.value)}
+                    type='text'
+                    value={url}
+                    name='url'
+                    onChange={(e)=>setUrl(e.target.value)}
                 />
                 </div>
                 <button type='submit'>Create</button>
@@ -52,6 +54,10 @@ const BlogForm = ({handleAddBlog}) => {
         </Togglable>
       
     )
+}
+
+BlogForm.propTypes = {
+    handleAddBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
