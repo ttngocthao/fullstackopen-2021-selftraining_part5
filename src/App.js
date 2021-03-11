@@ -19,6 +19,28 @@ function App() {
   const [user,setUser] = useState(null)
   const [blogs,setBlogs]=useState([])
  
+  const sortList =(listArr,sortCriteria='id',order='asc')=>{
+        listArr.sort((a, b) => {
+          const itemA = a[sortCriteria];
+          const itemB = b[sortCriteria];
+          let comparison = 0;
+          if (itemA > itemB) {
+            comparison = 1;
+          }
+          if (itemA < itemB) {
+            comparison = -1;
+          }
+          if(order==='des'){
+            return comparison * -1
+          }else{
+            return comparison;
+          }
+          
+        });
+        return listArr;
+      }
+      
+
   const showNotification =(messageContent,successfulMode)=>{
     setNotification({
         message: messageContent,
@@ -65,7 +87,7 @@ function App() {
   const handleAddBlog =async(newBlogObj)=>{  
     try {     
       const res = await blogService.create(newBlogObj)
-      setBlogs([res,...blogs])
+      setBlogs(sortList([res,...blogs],'likes','des'))
       showNotification(`A new blog ${res.title} by ${res.author} was added`,true)
      
     } catch (error) {
@@ -79,7 +101,7 @@ function App() {
     try {      
       const res =await blogService.update(id,updatedBlog)
       const updatedBlogs = blogs.map(blog=>blog.id!==id ? blog : {...blog,likes: res.likes} )
-      setBlogs(updatedBlogs)
+      setBlogs(sortList(updatedBlogs,'likes','des'))
       showNotification(`Post has successfully updated`,true)
     } catch (error) {
       console.log(error)
@@ -90,7 +112,8 @@ function App() {
   useEffect(()=>{
     (async()=>{
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      
+      setBlogs(sortList(blogs,'likes','des'))
     })()
   },[])//?get all blog posts
   
