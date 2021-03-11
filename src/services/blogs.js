@@ -13,11 +13,19 @@ const getAll = async () => {
 }
 
 const create = async(newBlogObj)=>{
-    const config = {
-        headers: { Authorization: token },
-    }
-    const response = await axios.post(baseUrl,newBlogObj,config)
-    return response.data
+  const config = {
+      headers: { Authorization: token },
+  }
+  const response = await axios.post(baseUrl,newBlogObj,config)
+  return response.data
 }
 
-export default {getAll,setToken,create}
+const update = async(blogId,requestData)=>{
+ 
+  // alert(`update function is called ${baseUrl}/${blogId}`)
+  // console.log(requestData)
+  const response = await axios.put(`${baseUrl}/${blogId}`,requestData)
+  return response.data
+}
+
+export default {getAll,setToken,create,update}

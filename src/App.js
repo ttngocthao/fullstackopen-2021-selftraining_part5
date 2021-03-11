@@ -19,31 +19,40 @@ function App() {
   const [user,setUser] = useState(null)
   const [blogs,setBlogs]=useState([])
  
-
-  const handleLogin =async({username,password})=>{       
-    try {
-      const user = await loginService.login({
-        username, password,
-      })   
-      //? save user info to local storage
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )   
-      blogService.setToken(user.token) //to use in create a new blog post
-      setUser(user)
-    
-
-    } catch (exception) {
-      setNotification({
-        message:'Wrong username or password',
-        successful:false
+  const showNotification =(messageContent,successfulMode)=>{
+    setNotification({
+        message: messageContent,
+        successful: successfulMode
       })
       setTimeout(() => {
         setNotification({
           message:null,
           successful:null
         })
-      }, 5000)
+      },5000)
+  }
+
+  const handleLogin =async({username,password})=>{       
+    try {
+      
+      const user = await loginService.login({
+        username, password
+      })   
+      
+      //? save user info to local storage
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )   
+      blogService.setToken(user.token) //to use in create a new blog post
+      setUser(user)    
+      
+    } catch (error) {
+      /**
+       * ! Access error message from server
+       * ! error.response.data.error
+       */
+      showNotification(error.response.data.error,false)
+      
     }
   }
 
@@ -53,40 +62,29 @@ function App() {
     setUser(null)
   }
 
-  const handleAddBlog =async(newBlogObj)=>{
-  
-  
+  const handleAddBlog =async(newBlogObj)=>{  
     try {     
       const res = await blogService.create(newBlogObj)
-      setBlogs([...blogs,res])
+      setBlogs([res,...blogs])
+      showNotification(`A new blog ${res.title} by ${res.author} was added`,true)
      
-      setNotification({
-        message: `A new blog ${res.title} by ${res.author} was added`,
-        successful: true
-      })
-      setTimeout(() => {
-        setNotification({
-          message:null,
-          successful:null
-        })
-      },5000)
     } catch (error) {
       console.log(error)
-      setNotification({
-        message:'Error adding blog',
-        successful: false
-      })
-
-      setTimeout(() => {
-        setNotification({
-          message:null,
-          successful:null
-        })
-      }, 5000)
+      showNotification('Error adding blog',false)
+      
     }
   }
 
-  
+  const handleUpdateBlog = async(id,updatedBlog)=>{
+    try {      
+      const res =await blogService.update(id,updatedBlog)
+      const updatedBlogs = blogs.map(blog=>blog.id!==id ? blog : {...blog,likes: res.likes} )
+      setBlogs(updatedBlogs)
+      showNotification(`Post has successfully updated`,true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
 
   useEffect(()=>{
@@ -109,7 +107,7 @@ function App() {
     <div>
       <h1>Blog</h1>
       
-      {notification.message && notification.successful && 
+      {notification.message!==null && notification.successful!==null && 
         <Notification message={notification.message} successful={notification.successful}/>}
       
       {!user && <LoginForm handleLogin={handleLogin}/>}
@@ -119,12 +117,12 @@ function App() {
           <div>{user.username} logged in <button onClick={handleLogout}>Logout</button></div>
           <br/>
           <Togglable buttonLabel='New Blog'>
-             <BlogForm handleAddBlog={handleAddBlog}/>
+             <BlogForm handleAddBlog={handleAddBlog} />
           </Togglable>
          
           <br/>
 
-          <Blogs blogs={blogs}/>
+          <Blogs blogs={blogs} handleUpdateBlog={handleUpdateBlog}/>
           
         </>
       }
