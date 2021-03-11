@@ -87,12 +87,13 @@ function App() {
   const handleAddBlog =async(newBlogObj)=>{  
     try {     
       const res = await blogService.create(newBlogObj)
-      setBlogs(sortList([res,...blogs],'likes','des'))
+      const allBlogs = await blogService.getAll()
+      setBlogs(sortList(allBlogs,'likes','des'))
       showNotification(`A new blog ${res.title} by ${res.author} was added`,true)
      
     } catch (error) {
       console.log(error)
-      showNotification('Error adding blog',false)
+      showNotification(error.response.data.error,false)
       
     }
   }
@@ -108,6 +109,20 @@ function App() {
     }
   }
   
+  const handleDeleteBlog = async(id,title,author)=>{
+    try {
+      await blogService.remove(id)
+      const blogs = await blogService.getAll()
+      setBlogs(sortList(blogs,'likes','des'))
+      showNotification(`Blog ${title} by ${author} was successfully deleted`,true)
+
+    } catch (error) {
+      console.log(error)
+      showNotification(error.response.data.error,false)
+    }
+    
+  }
+
 
   useEffect(()=>{
     (async()=>{
@@ -145,7 +160,12 @@ function App() {
          
           <br/>
 
-          <Blogs blogs={blogs} handleUpdateBlog={handleUpdateBlog}/>
+          <Blogs 
+            blogs={blogs} 
+            handleUpdateBlog={handleUpdateBlog} 
+            user={user}
+            handleDeleteBlog={handleDeleteBlog}
+          />
           
         </>
       }
