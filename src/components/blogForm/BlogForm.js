@@ -37,6 +37,7 @@ const BlogForm = ({ handleAddBlog }) => {
             type='text'
             value={author}
             name='author'
+            id='author'
             onChange={(e) => setAuthor(e.target.value)}
           />
         </div>

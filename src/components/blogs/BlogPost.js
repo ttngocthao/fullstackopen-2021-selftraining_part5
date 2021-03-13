@@ -23,10 +23,10 @@ const BlogPost = ({ blog,handleUpdateBlog,postOwner,handleDeleteBlog }) => {
 
   return (
     <div style={{ border:'1px solid black',borderRadius:'2px',padding:'5px',margin:'20px 0' }}>
-      <p>{blog.title} - {blog.author}<button onClick={handleViewDetailClick}>{viewDetail ? 'Hide':'View'}</button></p>
-      {viewDetail && <div style={{ display: viewDetail ? 'block' : 'none' }}>
+      <p>{blog.title} - {blog.author}<button id='toggleBtn' onClick={handleViewDetailClick}>{viewDetail ? 'Hide':'View'}</button></p>
+      {viewDetail && <div style={{ display: viewDetail ? 'block' : 'none' }} id='toggleContent'>
         <p>{blog.url}</p>
-        <p>likes {blog.likes} <button onClick={handleLikeClick}>like</button></p>
+        <p>likes {blog.likes} <button id='likeBtn' onClick={handleLikeClick}>like</button></p>
         <p>{blog.author}</p>
         {postOwner && <button onClick={handleRemoveClick}>Remove</button>}
       </div>}
