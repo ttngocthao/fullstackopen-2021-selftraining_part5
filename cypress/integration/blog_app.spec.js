@@ -57,18 +57,21 @@ describe('Blog app',function()  {
     })
   })
 
+  const newBlogPost={
+    title:'Testing with Cypress',
+    author:'TTNT',
+    url:'https://docs.cypress.io/api/commands/'
+  }
+
   describe('When logged in',() => {
-    const newBlogPost={
-      title:'Testing with Cypress',
-      author:'TTNT',
-      url:'https://docs.cypress.io/api/commands/'
-    }
+
     beforeEach(function(){
       //!login user
-      cy.request('POST', 'http://localhost:3003/api/login',{ username:thaoUser.username,password:thaoUser.password }).then(res => {
-        localStorage.setItem('loggedBlogappUser',JSON.stringify(res.body))
-        cy.visit('http://localhost:3000')
+      cy.login({
+        username:thaoUser.username,
+        password:thaoUser.password
       })
+
 
     })
 
@@ -84,6 +87,21 @@ describe('Blog app',function()  {
       cy.get('#blogList').should('contain',newBlogPost.title).and('contain',newBlogPost.author)
     })
 
+    describe('and when there is an exist blog post',() => {
+
+      beforeEach(() => {
+        //!Add new post to blog list
+        cy.createBlog(newBlogPost).then(res => console.log(res))
+      })
+
+      it('user can like a blog',() => {
+        //open blog post detail
+        cy.get('.blogPost #toggleBtn').click()
+        //like the post
+        cy.get('#likeBtn').click()
+        cy.get('.blogPost #likes').should('contain','1')
+      })
+    })
   })
 
 

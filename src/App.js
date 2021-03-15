@@ -125,13 +125,13 @@ function App() {
 
 
   useEffect(() => {
-    if(user){
-      (async() => {
-        const blogs = await blogService.getAll()
+    // if(user){
+    (async() => {
+      const blogs = await blogService.getAll()
 
-        setBlogs(sortList(blogs,'likes','des'))
-      })()
-    }
+      setBlogs(sortList(blogs,'likes','des'))
+    })()
+    // }
 
   },[])//?get all blog posts
 

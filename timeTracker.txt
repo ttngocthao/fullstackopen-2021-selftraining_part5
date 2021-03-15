@@ -9,6 +9,7 @@
 5.16 - 30mins
 5.17 to 5.18 - 3h30
 5.19 - 30min
+5.20 - 50min
 
 ** update backend for reset route, testing env
 ** call backend, create user before visit frontend host in cypress
