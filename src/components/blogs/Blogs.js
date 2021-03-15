@@ -5,7 +5,7 @@ import BlogPost from './BlogPost'
 
 const Blogs = ({ blogs,handleUpdateBlog,user,handleDeleteBlog }) => {
   return (
-    <div>
+    <div id='blogList'>
       {blogs.length===0 ? 'No blog posted' : blogs.map(blog => {
         // // postOwner={user.username===blog.user.username ? true : false}
         // console.log('user',user)

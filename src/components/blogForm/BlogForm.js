@@ -28,6 +28,7 @@ const BlogForm = ({ handleAddBlog }) => {
             type='text'
             value={title}
             name='title'
+            id='title'
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -47,10 +48,11 @@ const BlogForm = ({ handleAddBlog }) => {
             type='text'
             value={url}
             name='url'
+            id='url'
             onChange={(e) => setUrl(e.target.value)}
           />
         </div>
-        <button type='submit'>Create</button>
+        <button id='createNewBlogBtn' type='submit'>Create</button>
       </form>
     </Togglable>
 
