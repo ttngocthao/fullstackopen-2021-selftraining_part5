@@ -11,7 +11,7 @@ const Notification = ({ successful,message }) => {
     border:`2px solid ${successful ? 'green' : 'red'}`
   }
   return (
-    <div style={styles}>
+    <div id='notification' style={styles}>
       {message}
     </div>
   )
