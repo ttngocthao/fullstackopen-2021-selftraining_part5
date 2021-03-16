@@ -11,7 +11,8 @@ describe('Blog app',function()  {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
 
     //!create user
-    cy.request('POST', 'http://localhost:3003/api/users',thaoUser)
+    //cy.request('POST', 'http://localhost:3003/api/users',thaoUser)
+    cy.createUser(thaoUser)
 
     cy.visit('http://localhost:3000')
 
@@ -63,7 +64,7 @@ describe('Blog app',function()  {
     url:'https://docs.cypress.io/api/commands/'
   }
 
-  describe('When logged in',() => {
+  describe('When logged in as Thao',() => {
 
     beforeEach(function(){
       //!login user
@@ -95,14 +96,54 @@ describe('Blog app',function()  {
       })
 
       it('user can like a blog',() => {
-        //open blog post detail
-        cy.get('.blogPost #toggleBtn').click()
-        //like the post
-        cy.get('#likeBtn').click()
+
+        cy.get('.blogPost #toggleBtn').click() //* open blog post detail
+
+        cy.get('#likeBtn').click() //* like the post
+
         cy.get('.blogPost #likes').should('contain','1')
       })
+
+      it('user can delete their own post',() => {
+
+      })
+
+      describe('and when there are more blog posts from more than one user',() => {
+        const paulUser ={ username:'paulDenman',password:'paulDenman',name:'Paul Denman' }
+
+
+        it('cant delete other creator post',() => {
+          //* create the second user
+          cy.createUser(paulUser)
+
+          //* login as a second user, and try to delete the only post there
+          cy.login({ username: paulUser.username, password: paulUser.password })
+
+          cy.get('.blogPost #toggleBtn').click() //* open blog post detail
+
+          //* find remove btn -> there should not be remove btn
+          cy.get('.blogPost #removeBtn').should('have.length',0)
+        })
+
+        it('only the creator of the post can delete their blog',() => {
+
+          cy.get('.blogPost #toggleBtn').click() //* open blog post detail
+
+          cy.get('.blogPost #removeBtn').click() //* click remove btn --> it should be there
+
+          cy.on('window:confirm',() => true) //*confirm remove
+
+          cy.get('#blogList').should('not.contain',newBlogPost.title).and('not.contain',newBlogPost.author)
+
+        })
+
+      })
+
     })
+
+
   })
+
 
 
 })

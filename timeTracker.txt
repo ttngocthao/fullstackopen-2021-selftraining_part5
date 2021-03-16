@@ -10,7 +10,7 @@
 5.17 to 5.18 - 3h30
 5.19 - 30min
 5.20 - 50min
-
+5.21 - 1h
 ** update backend for reset route, testing env
 ** call backend, create user before visit frontend host in cypress
 ** cypress only uses rgb colors. there is space between comma and number eg: rgb(255, 0, 0)

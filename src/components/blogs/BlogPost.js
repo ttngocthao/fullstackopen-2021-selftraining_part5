@@ -28,7 +28,7 @@ const BlogPost = ({ blog,handleUpdateBlog,postOwner,handleDeleteBlog }) => {
         <p>{blog.url}</p>
         <p id='likes'>likes {blog.likes} <button id='likeBtn' onClick={handleLikeClick}>like</button></p>
         <p>{blog.author}</p>
-        {postOwner && <button onClick={handleRemoveClick}>Remove</button>}
+        {postOwner && <button id='removeBtn' onClick={handleRemoveClick}>Remove</button>}
       </div>}
 
     </div>

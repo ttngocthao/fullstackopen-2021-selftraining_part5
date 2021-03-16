@@ -48,3 +48,7 @@ Cypress.Commands.add('createBlog',({ title,author,url }) => {
   cy.visit(localHostUrl)
 
 })
+
+Cypress.Commands.add('createUser',({ username,password,name }) => {
+  cy.request('POST',`${baseRESTUrl}/users`,{ username,password,name })
+})
