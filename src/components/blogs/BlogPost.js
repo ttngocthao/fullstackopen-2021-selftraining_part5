@@ -23,12 +23,12 @@ const BlogPost = ({ blog,handleUpdateBlog,postOwner,handleDeleteBlog }) => {
 
   return (
     <div className='blogPost' style={{ border:'1px solid black',borderRadius:'2px',padding:'5px',margin:'20px 0' }}>
-      <p>{blog.title} - {blog.author}<button id='toggleBtn' onClick={handleViewDetailClick}>{viewDetail ? 'Hide':'View'}</button></p>
+      <p>{blog.title} - {blog.author}<button className='toggleBtn' onClick={handleViewDetailClick}>{viewDetail ? 'Hide':'View'}</button></p>
       {viewDetail && <div style={{ display: viewDetail ? 'block' : 'none' }} id='toggleContent'>
         <p>{blog.url}</p>
-        <p id='likes'>likes {blog.likes} <button id='likeBtn' onClick={handleLikeClick}>like</button></p>
+        <p className='likes'>likes {blog.likes} <button className='likeBtn' onClick={handleLikeClick}>like</button></p>
         <p>{blog.author}</p>
-        {postOwner && <button id='removeBtn' onClick={handleRemoveClick}>Remove</button>}
+        {postOwner && <button className='removeBtn' onClick={handleRemoveClick}>Remove</button>}
       </div>}
 
     </div>
